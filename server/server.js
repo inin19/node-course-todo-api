@@ -7,6 +7,7 @@ var { ObjectID } = require('mongodb');
 var { mongoose } = require('./db/mongoose');
 var { Todo } = require('./models/todo');
 var { User } = require('./models/user');
+var _ = require('lodash');
 
 var app = express();
 
@@ -78,6 +79,20 @@ app.delete('/todos/:id', (req, res) => {
 });
 
 
+app.post('/users', (req, res) => {
+  var body = _.pick(req.body, ['email', 'password']);
+  var user = new User(body);
+
+  console.log(user);
+
+  user.save().then((user) => {
+    res.send(user);
+  }).catch((e)=>{
+    res.status(400).send(e);
+  });
+});
+
+
 app.listen(port, () => {
   console.log(`started on port ${port}`);
-})
+});
