@@ -1,3 +1,4 @@
+require('./config/config');
 var express = require('express');
 var bodyParser = require('body-parser');
 
@@ -9,7 +10,7 @@ var { User } = require('./models/user');
 
 var app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
@@ -66,7 +67,7 @@ app.delete('/todos/:id', (req, res) => {
   }
 
   Todo.findByIdAndRemove(id).then((todo) => {
-    if(!todo){
+    if (!todo) {
       return res.status(404).send();
     }
     res.status(200).send();
