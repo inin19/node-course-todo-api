@@ -7,6 +7,8 @@ const { ObjectID } = require('mongodb');
 const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
+const { authenticate } = require('./middleware/authenticate');
+
 const _ = require('lodash');
 
 var app = express();
@@ -93,6 +95,13 @@ app.post('/users', (req, res) => {
   }).catch((e) => {
     res.status(400).send(e);
   });
+});
+
+
+
+app.get('/users/me', authenticate, (req, res) => {
+  console.log(req.user);
+  res.send(req.user);
 });
 
 
